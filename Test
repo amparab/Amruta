@@ -11,3 +11,12 @@ SELECT
   SUBSTR(your_column, 
          INSTR(your_column, '-', 1, 4) + 1) AS value4
 FROM your_table;
+
+
+SELECT 
+  REGEXP_SUBSTR(your_column, '[^-]+', 1, 2) AS value1,
+  REGEXP_SUBSTR(your_column, '[^-]+', 1, 3) AS value2,
+  REGEXP_SUBSTR(your_column, '[^-]+', 1, 4) AS value3,
+  REGEXP_SUBSTR(your_column, '[^-]+', 1, 5) AS value4
+FROM your_table;
+
