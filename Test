@@ -45,3 +45,32 @@ def run_server():
 
 if __name__ == '__main__':
     run_server()
+
+
+
+
+CURL
+
+
+import subprocess
+
+def execute_curl_command(curl_command):
+    try:
+        # Run the curl command
+        output = subprocess.check_output(curl_command, shell=True)
+        print("Curl command executed successfully.")
+        print(output.decode())  # Print the output
+    except subprocess.CalledProcessError as e:
+        print("Error executing the curl command:")
+        print(e.output.decode())
+
+def main():
+    # Specify your curl command
+    curl_command = 'curl -X GET https://api.example.com'
+
+    # Call the function to execute the curl command
+    execute_curl_command(curl_command)
+
+if __name__ == '__main__':
+    main()
+
