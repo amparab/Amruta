@@ -129,3 +129,6 @@ if __name__ == '__main__':
 urllib.request.urlretrieve(url, destination)
 print("File downloaded successfully")
 
+
+subprocess.run(['wget', url, '-O', destination], check=True)
+
