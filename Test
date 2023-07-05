@@ -74,3 +74,20 @@ def main():
 if __name__ == '__main__':
     main()
 
+
+
+
+try:
+        # Run the curl command
+        output = subprocess.check_output(curl_command, shell=True)
+        print("Curl command executed successfully.")
+
+        # Parse the JSON response
+        json_data = json.loads(output.decode())
+        # Extract the value of a specific property
+        property_value = json_data['property_name']
+        print(f"Value of property_name: {property_value}")
+    except subprocess.CalledProcessError as e:
+        print("Error executing the curl command:")
+        print(e.output.decode())
+
