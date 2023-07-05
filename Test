@@ -125,3 +125,7 @@ if __name__ == '__main__':
     main()
 
 
+
+urllib.request.urlretrieve(url, destination)
+print("File downloaded successfully")
+
