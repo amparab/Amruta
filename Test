@@ -20,9 +20,10 @@ SELECT
   REGEXP_SUBSTR(your_column, '[^-]+', 1, 5) AS value4
 FROM your_table;
 
-from http.server import BaseHTTPRequestHandler, HTTPServer
+import SimpleHTTPServer
+import SocketServer
 
-class MyRequestHandler(BaseHTTPRequestHandler):
+class MyRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/':
             # Execute your script here
@@ -31,14 +32,14 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
-            self.wfile.write(message.encode())
+            self.wfile.write(message)
         else:
             self.send_error(404, 'Not Found')
 
 def run_server():
     host = 'localhost'
     port = 8000
-    server = HTTPServer((host, port), MyRequestHandler)
+    server = SocketServer.TCPServer((host, port), MyRequestHandler)
     print(f'Server running on http://{host}:{port}')
     server.serve_forever()
 
