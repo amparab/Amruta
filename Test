@@ -132,3 +132,16 @@ print("File downloaded successfully")
 
 subprocess.run(['wget', url, '-O', destination], check=True)
 
+
+
+@Test
+    void testStaticMethod() {
+        try (MockedStatic<YourClassWithStaticMethods> mockedStatic = mockStatic(YourClassWithStaticMethods.class)) {
+            // Mock the static method behavior
+            mockedStatic.when(() -> YourClassWithStaticMethods.yourStaticMethod()).thenReturn("Mocked Value");
+
+            // Test your code that uses the static method
+            // ...
+        }
+    }
+
