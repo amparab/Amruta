@@ -91,3 +91,37 @@ try:
         print("Error executing the curl command:")
         print(e.output.decode())
 
+
+
+OS
+
+import os
+
+def remove_file(file_path):
+    try:
+        # Remove the file
+        os.remove(file_path)
+        print(f"File '{file_path}' removed successfully.")
+    except OSError as e:
+        print(f"Error removing file '{file_path}':")
+        print(e)
+
+def set_environment_variable(variable_name, variable_value):
+    # Set the environment variable
+    os.environ[variable_name] = variable_value
+    print(f"Environment variable '{variable_name}' set to '{variable_value}'.")
+
+def main():
+    # Remove a file
+    file_path = '/path/to/your/file.txt'
+    remove_file(file_path)
+
+    # Set an environment variable
+    variable_name = 'MY_VARIABLE'
+    variable_value = 'some_value'
+    set_environment_variable(variable_name, variable_value)
+
+if __name__ == '__main__':
+    main()
+
+
