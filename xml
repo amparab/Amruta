@@ -1,34 +1,15 @@
-import org.w3c.dom.*;
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.StringWriter;
-
-public class XmlParserResponseTag {
-    public static void main(String[] args) {
-        try {
-            File xmlFile = new File("data.xml");
-
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(xmlFile);
-
-            // Use XPath to select the entire <response> element
-            XPathFactory xPathFactory = XPathFactory.newInstance();
-            XPath xPath = xPathFactory.newXPath();
-            String xPathExpression = "/response";
-            Node responseNode = (Node) xPath.evaluate(xPathExpression, document, XPathConstants.NODE);
-
-            // Get the content of <response> tag without the tag itself
-            String responseContent = nodeToString(responseNode);
-
-            System.out.println("Content inside <response> tag:");
-            System.out.println(responseContent);
-        } catch (Exception e) {
-            e.printStackTrace();
+private static String getChildNodesAsString(Node node) {
+        StringBuilder content = new StringBuilder();
+        NodeList childNodes = node.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node child = childNodes.item(i);
+            if (child.getNodeType() == Node.ELEMENT_NODE) {
+                content.append(nodeToString(child));
+            } else if (child.getNodeType() == Node.TEXT_NODE) {
+                content.append(child.getTextContent());
+            }
         }
+        return content.toString();
     }
 
     // Helper method to convert a Node and its children to a string
@@ -38,14 +19,14 @@ public class XmlParserResponseTag {
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes"); // Exclude XML declaration
 
+            DOMSource source = new DOMSource(node);
             StringWriter writer = new StringWriter();
-            transformer.transform(new DOMSource(node), new StreamResult(writer));
+            StreamResult result = new StreamResult(writer);
+            transformer.transform(source, result);
+
             return writer.toString();
         } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
     }
-}
-
-.replaceAll("\\r\\n|\\r|\\n", "\n");
