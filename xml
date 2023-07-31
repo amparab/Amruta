@@ -32,17 +32,14 @@ public class XmlParserResponseTag {
     }
 
     // Helper method to convert a Node and its children to a string
-     private static String nodeToString(Node node) {
+    private static String nodeToString(Node node) {
         try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes"); // Exclude XML declaration
 
-            DOMSource source = new DOMSource(node);
             StringWriter writer = new StringWriter();
-            StreamResult result = new StreamResult(writer);
-            transformer.transform(source, result);
-
+            transformer.transform(new DOMSource(node), new StreamResult(writer));
             return writer.toString();
         } catch (Exception e) {
             e.printStackTrace();
