@@ -57,3 +57,68 @@ public class XMLParser {
         }
     }
 }
+
+
+                *******************************
+
+
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.StringWriter;
+
+public class XmlParserResponseTag {
+    public static void main(String[] args) {
+        try {
+            File xmlFile = new File("data.xml");
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(xmlFile);
+
+            // Use XPath to select the entire <response> element
+            XPathFactory xPathFactory = XPathFactory.newInstance();
+            XPath xPath = xPathFactory.newXPath();
+            String xPathExpression = "/response";
+            Node responseNode = (Node) xPath.evaluate(xPathExpression, document, XPathConstants.NODE);
+
+            // Get the content of <response> tag without the tag itself
+            String responseContent = getChildNodesAsString(responseNode);
+
+            System.out.println("Content inside <response> tag:");
+            System.out.println(responseContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Helper method to get the content of a Node's child nodes as a string
+    private static String getChildNodesAsString(Node node) {
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes"); // Exclude XML declaration
+
+            StringBuilder content = new StringBuilder();
+            NodeList childNodes = node.getChildNodes();
+            for (int i = 0; i < childNodes.getLength(); i++) {
+                Node child = childNodes.item(i);
+                if (child.getNodeType() == Node.ELEMENT_NODE) {
+                    StringWriter writer = new StringWriter();
+                    transformer.transform(new DOMSource(child), new StreamResult(writer));
+                    content.append(writer.toString());
+                } else if (child.getNodeType() == Node.TEXT_NODE) {
+                    content.append(child.getTextContent());
+                }
+            }
+            return content.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+}
+
