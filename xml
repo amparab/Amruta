@@ -1,0 +1,42 @@
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import java.io.File;
+
+public class XmlParserResponseTag {
+    public static void main(String[] args) {
+        try {
+            File xmlFile = new File("data.xml");
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(xmlFile);
+
+            // Use XPath to select the entire <response> element
+            XPathFactory xPathFactory = XPathFactory.newInstance();
+            XPath xPath = xPathFactory.newXPath();
+            String xPathExpression = "/response";
+            Node responseNode = (Node) xPath.evaluate(xPathExpression, document, XPathConstants.NODE);
+
+            // Convert the <response> element and its content to a string
+            String responseContent = nodeToString(responseNode);
+
+            System.out.println("Content inside <response> tag:");
+            System.out.println(responseContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Helper method to convert a Node and its children to a string
+    private static String nodeToString(Node node) {
+        try {
+            DOMImplementationLS domImplLS = (DOMImplementationLS) node.getOwnerDocument().getImplementation().getFeature("LS", "3.0");
+            LSSerializer serializer = domImplLS.createLSSerializer();
+            serializer.getDomConfig().setParameter("xml-declaration", false); // Exclude XML declaration
+            return serializer.writeToString(node);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+}
