@@ -145,3 +145,33 @@ subprocess.run(['wget', url, '-O', destination], check=True)
         }
     }
 
+
+import javax.xml.parsers.*;
+import javax.xml.xpath.*;
+import org.w3c.dom.*;
+import java.io.File;
+
+public class XmlParserNestedTagXPath {
+    public static void main(String[] args) {
+        try {
+            File xmlFile = new File("data.xml");
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(xmlFile);
+
+            XPathFactory xPathFactory = XPathFactory.newInstance();
+            XPath xPath = xPathFactory.newXPath();
+
+            // Use XPath expression to get the value of the nested "child" tag
+            String xPathExpression = "/root/parent/child";
+            String nestedTagValue = xPath.evaluate(xPathExpression, document);
+
+            System.out.println("Value of nested 'child' tag: " + nestedTagValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
