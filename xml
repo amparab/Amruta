@@ -47,3 +47,5 @@ public class XmlParserResponseTag {
         }
     }
 }
+
+.replaceAll("\\r\\n|\\r|\\n", "\n");
