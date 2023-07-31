@@ -1,32 +1,59 @@
-private static String getChildNodesAsString(Node node) {
-        StringBuilder content = new StringBuilder();
-        NodeList childNodes = node.getChildNodes();
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            Node child = childNodes.item(i);
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                content.append(nodeToString(child));
-            } else if (child.getNodeType() == Node.TEXT_NODE) {
-                content.append(child.getTextContent());
-            }
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import java.io.*;
+
+public class XMLParser {
+    public static void main(String[] args) {
+        String xmlInput = "<response><tag><a></a></tag></response>";
+
+        try {
+            // Create a DocumentBuilder
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            // Parse the input string into a Document
+            Document doc = builder.parse(new ByteArrayInputStream(xmlInput.getBytes()));
+
+            // Get the root element
+            Element root = doc.getDocumentElement();
+
+            // Extract the content of the <response> tag as it is in the XML format
+            String responseContent = elementToString(root);
+
+            System.out.println(responseContent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return content.toString();
     }
 
-    // Helper method to convert a Node and its children to a string
-    private static String nodeToString(Node node) {
+    // Helper method to convert an Element to its XML representation
+    private static String elementToString(Element element) {
         try {
+            // Create a new DOMSource with the given element
+            DOMSource source = new DOMSource(element);
+
+            // Create a StringWriter to hold the XML content
+            StringWriter writer = new StringWriter();
+
+            // Create a new StreamResult with the StringWriter
+            StreamResult result = new StreamResult(writer);
+
+            // Create a Transformer to transform the DOMSource to the StreamResult
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes"); // Exclude XML declaration
 
-            DOMSource source = new DOMSource(node);
-            StringWriter writer = new StringWriter();
-            StreamResult result = new StreamResult(writer);
+            // Set the output properties to preserve the formatting
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+            // Transform the DOMSource to the StreamResult
             transformer.transform(source, result);
 
+            // Get the XML content as a string
             return writer.toString();
         } catch (Exception e) {
             e.printStackTrace();
-            return "";
+            return null;
         }
     }
+}
