@@ -34,6 +34,26 @@ const robot = require('robotjs');
 // Get the mouse coordinates
 const mousePos = robot.getMousePos();
 
+----
+js
+
+const clickCoordinates = [
+  { x: 100, y: 200 }, // First row coordinates
+  { x: 100, y: 300 }, // Second row coordinates
+  // Add more coordinates as needed
+];
+
+// Simulate clicking on each set of coordinates
+for (const coords of clickCoordinates) {
+  const element = document.elementFromPoint(coords.x, coords.y);
+  if (element) {
+    element.click();
+    console.log(`Clicked at (${coords.x}, ${coords.y})`);
+  } else {
+    console.log(`No element found at (${coords.x}, ${coords.y})`);
+  }
+}
+
 console.log(`Mouse coordinates: x = ${mousePos.x}, y = ${mousePos.y}`);
 
 
