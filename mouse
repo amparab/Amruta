@@ -1,0 +1,19 @@
+const robot = require('robotjs');
+
+// Define the screen coordinates for the rows you want to click
+const firstRowX = 300;
+const firstRowY = 200;
+
+const secondRowX = 300;
+const secondRowY = 300;
+
+// Move mouse and click on the first row
+robot.moveMouseSmooth(firstRowX, firstRowY);
+robot.mouseClick();
+
+// Wait for a brief moment (optional)
+robot.setMouseDelay(1000);
+
+// Move mouse and click on the second row
+robot.moveMouseSmooth(secondRowX, secondRowY);
+robot.mouseClick();
