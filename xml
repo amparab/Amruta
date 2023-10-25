@@ -117,8 +117,42 @@ public class XmlParserResponseTag {
             return content.toString();
         } catch (Exception e) {
             e.printStackTrace();
-            return "";
+            import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+
+public class XmlToJsonConverter {
+    public static void main(String[] args) {
+        String xmlString = "<root><name>John</name><age>30</age></root>";
+
+        try {
+            XmlMapper xmlMapper = new XmlMapper();
+            JsonNode jsonNode = xmlMapper.readTree(xmlString.getBytes());
+            String jsonString = jsonNode.toString();
+
+            System.out.println(jsonString);
+        } catch (Exception import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+
+public class XmlToJsonConverter {
+    public static void main(String[] args) {
+        String xmlString = "<root><name>John</name><age>30</age></root>";
+
+        try {
+            XmlMapper xmlMapper = new XmlMapper();
+            JsonNode jsonNode = xmlMapper.readTree(xmlString.getBytes());
+            String jsonString = jsonNode.toString();
+
+            System.out.println(jsonString);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
+
+
+
+
+
+    
+
 
