@@ -1,4 +1,62 @@
-const robot = require('robotjs');
+import java.util.HashMap;
+import java.util.Map;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+public class DuplicateSubtrees {
+
+    private Map<String, Integer> subtreeCount = new HashMap<>();
+
+    public int countDuplicateSubtrees(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        countDuplicateSubtreesHelper(root);
+        int totalCount = 0;
+        for (int count : subtreeCount.values()) {
+            if (count > 1) {
+                totalCount++;
+            }
+        }
+        return totalCount;
+    }
+
+    private String countDuplicateSubtreesHelper(TreeNode node) {
+        if (node == null) {
+            return "#"; // Represent null nodes with a special character
+        }
+
+        String treeString = node.val + "," +
+                countDuplicateSubtreesHelper(node.left) + "," +
+                countDuplicateSubtreesHelper(node.right);
+
+        subtreeCount.put(treeString, subtreeCount.getOrDefault(treeString, 0) + 1);
+
+        return treeString;
+    }
+
+    public static void main(String[] args) {
+        // Example usage:
+        DuplicateSubtrees solution = new DuplicateSubtrees();
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.right.left = new TreeNode(2);
+        root.right.right = new TreeNode(4);
+        root.right.left.left = new TreeNode(4);
+
+        int duplicateCount = solution.countDuplicateSubtrees(root);
+        System.out.println("Count of Duplicate Subtrees: " + duplicateCount);
+    }
+}const robot = require('robotjs');
 
 // Define the screen coordinates for the rows you want to click
 const firstRowX = 300;
