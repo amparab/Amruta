@@ -1,28 +1,10 @@
-private static byte[] toPrimitiveArray(Byte[] objectArray) {
-        return IntStream.range(0, objectArray.length)
-                .map(index -> objectArray[index])
-                .mapToInt(Byte::intValue)
-                .public class Trial {
-    int count = 0;
-
-    public int dupSub(Node root) {
-        Map<String, Integer> map = new HashMap<>();
-        traversal(root, map);
-        return count;
-    }
-
-    public String traversal(Node root, Map<String, Integer> map) {
-        if (root == null) return "null";
-
-        String subtree = root.data + "," + traversal(root.left, map) + "," + traversal(root.right, map);
-
-        if (root.left != null || root.right != null) {
-            map.put(subtree, map.getOrDefault(subtree, 0) + 1);
-            if (map.get(subtree) == 2) {
-                count++;
-            }
-        }
-
-        return subtree;
-    }
+@override
+public boolean processFXInputEvent(String message, boolean isReplay, FxInputEvent fxInputEvent){
+10g. info("Publishing BranchNotification to CFX -> Branch : {}, Branchstatus: {}", fxInputEvent. getData
+messagel. setstringProperty("MESSAGE_
+1og. debug ("Message with headers -> {}", messagel);
+return messagel;
+10g. info("successfully Published BranchNotification to CFX -> Branch : {}, Branchstatus: {}",
+fxInputEvent. getData).getBranchId(), fxInputEvent. getData().getBranchStatus());
+return true;
 }
