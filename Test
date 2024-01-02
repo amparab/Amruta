@@ -1,57 +1,30 @@
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.jms.core.JmsTemplate;
+@Test
+    public void testProcessEventWithValidMessage() throws JMSException {
+        // Arrange
+        JmsTemplate mockJmsTemplate = mock(JmsTemplate.class);
+        publisher.setJmsTemplate(mockJmsTemplate);
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessagePostProcessor;
+        // Act
+        boolean result = publisher.processEvent("ValidMessage");
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-@ExtendWith(MockitoExtension.class)
-class YourClassTest {
-
-    @Mock
-    private JmsTemplate jmsTemplate;
-
-    @InjectMocks
-    private YourClass yourClass;
-
-    @Test
-    void testProcessFxInputEvent() {
-        // Mock input data
-        String message = "YourTestMessage";
-        boolean isReplay = false;
-        FxInputEvent fxInputEvent = new FxInputEvent();  // You may need to create an instance with valid data
-
-        // Mock behavior of jmsTemplate
-        Mockito.doNothing().when(jmsTemplate).convertAndSend(Mockito.any(), Mockito.any(MessagePostProcessor.class));
-
-        // Call the method to be tested
-        boolean result = yourClass.processFxInputEvent(message, isReplay, fxInputEvent);
-
-        // Assert the result
+        // Assert
         assertTrue(result);
 
-        // Optionally, you can verify that the convertAndSend method was called with the expected arguments.
-        Mockito.verify(jmsTemplate).convertAndSend(Mockito.eq(message), Mockito.any(MessagePostProcessor.class));
+        // Verify that convertAndSend is called with the correct arguments
+        ArgumentCaptor<Object> messageCaptor = ArgumentCaptor.forClass(Object.class);
+        ArgumentCaptor<MessagePostProcessor> postProcessorCaptor = ArgumentCaptor.forClass(MessagePostProcessor.class);
+        verify(mockJmsTemplate).convertAndSend(messageCaptor.capture(), postProcessorCaptor.capture());
+
+        assertEquals("ValidMessage", messageCaptor.getValue());
+
+        // Create a mock Message for testing postProcessMessage
+        Message mockMessage = mock(Message.class);
+
+        // Act on postProcessMessage
+        MessagePostProcessor postProcessor = postProcessorCaptor.getValue();
+        Message processedMessage = postProcessor.postProcessMessage(mockMessage);
+
+        // Assert postProcessMessage logic
+        verify(mockMessage).setStringProperty("TEST", "Property");
+        assertSame(mockMessage, processedMessage); // Ensure the same message instance is returned
     }
-
-    @Test
-    void testPostProcessMessage() throws JMSException {
-        // Mock input data
-        Message message = Mockito.mock(Message.class);
-
-        // Call the method to be tested
-        Message result = yourClass.postProcessMessage(message);
-
-        // Optionally, you can verify that the setStringProperty method was called with the expected arguments.
-        Mockito.verify(message).setStringProperty(Mockito.eq("MESSAGE_TYPE"), Mockito.eq("BranchStatus"));
-
-        // Assert the result
-        // Add your assertions based on the behavior of your postProcessMessage method
-    }
-}
